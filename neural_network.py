@@ -48,21 +48,29 @@ class neural_net(object):
 				self.input[i] = i
 
 			for node in self.hidden:
-				Ij = map(lambda x : x[0].out * x[1], node.parents) + node.bias
+				Ij = sum(map(lambda x : x[0].out * x[1], node.parents)) + node.bias
 				node.out = sigmoid(Ij)
 
 			for node in self.out:
-				Ij = map(lambda x : x[0].out * x[1], node.parents) + node.bias
+				Ij = sum(map(lambda x : x[0].out * x[1], node.parents)) + node.bias
 				node.out = sigmoid(Ij)
 
 			# backpropogate the errors now
 			j = 0
 			for node in self.out:
 				node.error = node.out * (1-node.out) * (output_real[j] - node.out)
+				j = j + 1
+
+			for node in self.hidden:
+				node.error = node.out * (1-node.out) * sum(map(lambda x : (x[0].error * x[1] ) , node.children))
+
+			# change weights and bias
+			#simple - two more iterations : 1st loop update hidden; second update outer layer.
 
 
-
-
+def sigmoid(Ij):
+	var = math.pow(Ij, -1)
+	return 1/(1+var)
 		
 	
 class Node:

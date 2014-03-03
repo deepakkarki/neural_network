@@ -64,7 +64,31 @@ class neural_net(object):
 			for node in self.hidden:
 				node.error = node.out * (1-node.out) * sum(map(lambda x : (x[0].error * x[1] ) , node.children))
 
+			l = 0.9
 			# change weights and bias
+			for node in self.output:
+				err = node.error
+				for parent in node.parents:
+					dw = l * err * parent[0].out 
+					#dw : delta wt - change to be applied
+					parent[1] += dw
+				db =  l * err
+				node.bias += db
+
+			##****************************PROBLEM -- have to update children as well**********************##
+			##****************************But will work for one input tuple. will fail for more***********##
+			
+			for node in self.hidden:
+				err = node.error
+				for parent in node.parents:
+					dw = l * err * parent[0].out 
+					#dw : delta wt - change to be applied
+					parent[1] += dw
+				db =  l * err
+				node.bias += db
+
+
+
 			#simple - two more iterations : 1st loop update hidden; second update outer layer.
 
 

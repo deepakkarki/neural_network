@@ -79,7 +79,6 @@ class neural_net(object):
 		'''
 		Updates the neural network from the given list of data
 		data_set (list of tuples) : contains data for learning
-		log (Boolean) : if True, logs the changes in weights and bias values for each node for each input tuple
 		'''
 		delta_epoch = 0
 		for data in data_set:
@@ -185,8 +184,11 @@ class Node:
 
 if __name__ == '__main__':
 	n = neural_net(3, 2, 2)
+	print "BEFORE"
 	print n
 	res, val = n.train([(1,0,1,1,0)])
+	print "AFTER"
 	print n
+	print "Termination condition"
 	print res
 	print "Number of iterations : ", val
